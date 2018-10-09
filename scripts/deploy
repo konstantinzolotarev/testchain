@@ -4,13 +4,29 @@ set -e
 CWD="${0%/*}"
 LIB=$CWD/../lib
 OUT=$CWD/../out
+OUTPUT_FORMAT=json
+
+# parse arguments
+while [[ "$#" > 0 ]]; do case $1 in
+  -o|--output) OUTPUT_FORMAT="$2"; shift;;
+esac; shift; done
+
+# Pre check output format before doing something
+if ! [[ "$OUTPUT_FORMAT" =~ ^(json|env)$ ]]; then
+  echo "output format $OUTPUT_FORMAT is not supported"
+  exit 1
+fi
+
 mkdir -p $OUT
 
 cd $LIB/dss-deploy/
 source bin/deploy-all
 cd -
 
-cat > $OUT/addresses.json <<- EOM
+case "$OUTPUT_FORMAT" in
+  json)
+    echo "Publishing output into $OUT/addresses.json"
+    cat > $OUT/addresses.json <<- EOM
 {
   "MCD_DEPLOY": "$MCD_DEPLOY",
   "MCD_GOV": "$MCD_GOV",
@@ -45,5 +61,43 @@ cat > $OUT/addresses.json <<- EOM
   "MCD_SPOT_REP": "$MCD_SPOT_REP"
 }
 EOM
+;;
+  env)
+    echo "Publishing output into $OUT/addresses"
+    cat > $OUT/addresses <<- EOM
+#!/usr/bin/env bash
+
+export MCD_DEPLOY=$MCD_DEPLOY
+export MCD_GOV=$MCD_GOV
+export MCD_VAT=$MCD_VAT
+export MCD_PIT=$MCD_PIT
+export MCD_DRIP=$MCD_DRIP
+export MCD_CAT=$MCD_CAT
+export MCD_VOW=$MCD_VOW
+export MCD_DAI=$MCD_DAI
+export MCD_JOIN_DAI=$MCD_JOIN_DAI
+export MCD_MOVE_DAI=$MCD_MOVE_DAI
+export MCD_FLAP=$MCD_FLAP
+export MCD_FLOP=$MCD_FLOP
+export MCD_MOM=$MCD_MOM
+export PIP_ETH=$PIP_ETH
+
+export MCD_JOIN_ETH=$MCD_JOIN_ETH
+export MCD_MOVE_ETH=$MCD_MOVE_ETH
+export MCD_FLIP_ETH=$MCD_FLIP_ETH
+export MCD_SPOT_ETH=$MCD_SPOT_ETH
+
+export MCD_DAI_GUARD=$MCD_DAI_GUARD
+
+export REP=$REP
+export PIP_REP=$PIP_REP
+export MCD_JOIN_REP=$MCD_JOIN_REP
+export MCD_MOVE_REP=$MCD_MOVE_REP
+export MCD_FLIP_REP=$MCD_FLIP_REP
+export MCD_SPOT_REP=$MCD_SPOT_REP
+
+EOM
+    ;;
+esac
 
 $CWD/collect-abis
