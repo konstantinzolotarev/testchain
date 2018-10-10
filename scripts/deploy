@@ -5,10 +5,12 @@ CWD="${0%/*}"
 LIB=$CWD/../lib
 OUT=$CWD/../out
 OUTPUT_FORMAT=json
+PORT=2000
 
 # parse arguments
 while [[ "$#" > 0 ]]; do case $1 in
   -o|--output) OUTPUT_FORMAT="$2"; shift;;
+  -p|--port) PORT="$2"; shift;;
 esac; shift; done
 
 # Pre check output format before doing something

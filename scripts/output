@@ -46,7 +46,7 @@ EOM
 
 }
 
-function wtire_env 
+function write_env 
 {
   
   if [ -z "$1" ]; then
@@ -58,6 +58,7 @@ function wtire_env
   cat > $1 <<- EOM
 #!/usr/bin/env bash
 
+export ETH_RPC_URL="127.0.0.1:$PORT"
 export MCD_DEPLOY=$MCD_DEPLOY
 export MCD_GOV=$MCD_GOV
 export MCD_VAT=$MCD_VAT

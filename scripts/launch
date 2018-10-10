@@ -80,7 +80,7 @@ if ! nc -z 127.0.0.1 $PORT; then
     if [ "$SKIP_BUILD_IF_ALREADY_BUILT" ]; then
       echo "Skipping build of dapps that are already built."
     fi
-    $CWD/deploy -o "$OUTPUT_FORMAT"
+    $CWD/deploy -p 2000 -o "$OUTPUT_FORMAT"
   fi
 
   END_TIME=`date +%s`
