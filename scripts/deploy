@@ -14,7 +14,7 @@ while [[ "$#" > 0 ]]; do case $1 in
 esac; shift; done
 
 # Pre check output format before doing something
-if ! [[ "$OUTPUT_FORMAT" =~ ^(json|env)$ ]]; then
+if ! [[ "$OUTPUT_FORMAT" =~ ^(json|env|yaml|yml)$ ]]; then
   echo "output format $OUTPUT_FORMAT is not supported"
   exit 1
 fi
@@ -31,7 +31,10 @@ source $CWD/output
 case "$OUTPUT_FORMAT" in
   json)
     write_json "$OUT/addresses.json"
-;;
+    ;;
+  yaml|yml)
+    write_yaml "$OUT/addresses.yaml"
+    ;;
   env)
     write_env "$OUT/addresses"
     ;;

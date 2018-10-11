@@ -95,3 +95,49 @@ export MCD_SPOT_DGX=$MCD_SPOT_DGX
 
 EOM
 }
+
+function write_yaml
+{
+  if [ -z "$1" ]; then
+    echo "No output file passed. Use write_json path/to/file.json"
+    exit 1
+  fi
+
+  echo "Publishing output into $1"
+  cat > $1 <<- EOM
+rpc_url: "127.0.0.1:$PORT"
+mcd:
+  deploy: "$MCD_DEPLOY"
+  gov: "$MCD_GOV"
+  vat: "$MCD_VAT"
+  pit: "$MCD_PIT"    
+  drip: "$MCD_DRIP"
+  cat: "$MCD_CAT"
+  vow: "$MCD_VOW"
+  mcd: "$MCD_MCD"
+  join_dai: "$MCD_JOIN_DAI"
+  move_dai: "$MCD_MOVE_DAI"
+  flap: "$MCD_FLAP"
+  flop: "$MCD_FLOP"
+  mom: "$MCD_MOM"
+  dai: "$MCD_DAI"
+  dai_guard: "$MCD_DAI_GUARD"
+  join_dgx: "$MCD_JOIN_DGX"
+  move_dgx: "$MCD_MOVE_DGX"
+  flip_dgx: "$MCD_FLIP_DGX"
+  spot_dgx: "$MCD_SPOT_DGX"
+  join_eth: "$MCD_JOIN_ETH"
+  move_eth: "$MCD_MOVE_ETH"
+  flip_eth: "$MCD_FLIP_ETH"
+  spot_eth: "$MCD_SPOT_ETH"
+  join_rep: "$MCD_JOIN_REP"
+  move_rep: "$MCD_MOVE_REP"
+  flip_rep: "$MCD_FLIP_REP"
+  spot_rep: "$MCD_SPOT_REP"
+pip:
+  dgx: "$PIP_DGX"
+  eth: "$PIP_ETH"
+  rep: "$PIP_REP"
+rep: "$REP"
+EOM
+}
